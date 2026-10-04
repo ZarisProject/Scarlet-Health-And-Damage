@@ -1,6 +1,6 @@
 # Scarlet Health & Damage
 
-UE5 plugin containing health and damage systems, originally developed for Zaris
+An UE5 plugin containing health and damage systems, originally developed for Zaris.
 
 **Status: In Development**
 
