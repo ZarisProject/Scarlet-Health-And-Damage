@@ -32,6 +32,9 @@ void USHD_HealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 // Reducts health points based on provided damage scaled according to it's type and DamageScalingMap
 void USHD_HealthComponent::ApplyDamage(float Damage, ESHD_DamageType Type, AActor* Initiator)
 {
+	// No damage for the dead!
+	if (!IsAlive()) return;
+
 	// Resolving actual damage
 	float ScalingFactor = 1.f;
 	float* DamageScalingMapEntry = DamageScalingMap.Find(Type);
@@ -44,18 +47,17 @@ void USHD_HealthComponent::ApplyDamage(float Damage, ESHD_DamageType Type, AActo
 	Health -= ActualDamage;
 
 	// Clamping health + Death check
-	bool Death = false;
 	if (Health <= 0.f)
 	{
 		Health = 0.0f;
-		Death = true;
+		Alive = false;
 	}
 
 	// Delegate calls
 	OnDamageTaken.Broadcast(Damage, Type, Initiator);
 	OnHealthChanged.Broadcast(-1.f * ActualDamage);
 
-	if (Death)
+	if (!Alive)
 	{
 		OnHealthDepleted.Broadcast();
 	}
@@ -77,6 +79,25 @@ void USHD_HealthComponent::RegenerateHealth(float Amount)
 	}
 
 	// Delegate calls
+	OnHealthChanged.Broadcast(Delta);
+}
+
+// Revives the component, making it alive again
+// Health is set to NewHealth
+void USHD_HealthComponent::Revive(float NewHealth)
+{
+	// No revival for the living!
+	if (IsAlive()) return;
+
+	// Delta calculation (for the delegate)
+	float Delta = NewHealth - Health;
+
+	// Revivial logic
+	Health = NewHealth;
+	Alive = true;
+
+	// Delegate calls
+	OnRevived.Broadcast();
 	OnHealthChanged.Broadcast(Delta);
 }
 

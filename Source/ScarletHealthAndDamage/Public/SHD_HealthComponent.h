@@ -14,6 +14,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDepleted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDamageTaken, float, Damage, ESHD_DamageType, Type, AActor*, Initiator);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRevived);
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable) )
@@ -29,6 +30,9 @@ protected:
 
 	// Current amount of health "points"
 	float Health = 0.0;
+
+	// Whether actor (component) is still alive (health > 0.0) or not 
+	bool Alive = true;
 
 public:
 
@@ -57,6 +61,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "ScarletHealthDamage|Health")
 	float GetMaxHealth() { return MaxHealth; }
 
+	// Returns whether actor (component) is still alive (health > 0.0) or not 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "ScarletHealthDamage|Health")
+	bool IsAlive() { return Alive; }
+
 	
 	// Reducts health points based on provided damage scaled according to it's type and DamageScalingMap
 	UFUNCTION(BlueprintCallable, Category = "ScarletHealthDamage|Health")
@@ -65,6 +73,11 @@ public:
 	// Restors health points
 	UFUNCTION(BlueprintCallable, Category = "ScarletHealthDamage|Health")
 	void RegenerateHealth(float Amount);
+
+	// Revives the component, making it alive again
+	// Health is set to NewHealth
+	UFUNCTION(BlueprintCallable, Category = "ScarletHealthDamage|Health")
+	void Revive(float NewHealth);
 
 // Delegates
 public:
@@ -81,4 +94,8 @@ public:
 	// Delta = NewHealth - OldHealth
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 	FOnHealthChanged OnHealthChanged;
+
+	// Called when revived
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnRevived OnRevived;
 };
