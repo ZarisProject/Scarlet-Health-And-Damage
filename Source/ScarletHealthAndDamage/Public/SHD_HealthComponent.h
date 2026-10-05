@@ -50,20 +50,20 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// Returns current amount of health "points"
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "ScarletHealth&Damage|Health")
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "ScarletHealthDamage|Health")
 	float GetHealth() { return Health; }
 
 	// Returns maximum amount of health "points"
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "ScarletHealth&Damage|Health")
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "ScarletHealthDamage|Health")
 	float GetMaxHealth() { return MaxHealth; }
 
 	
 	// Reducts health points based on provided damage scaled according to it's type and DamageScalingMap
-	UFUNCTION(BlueprintCallable, Category = "ScarletHealth&Damage|Health")
+	UFUNCTION(BlueprintCallable, Category = "ScarletHealthDamage|Health")
 	void ApplyDamage(float Damage, ESHD_DamageType Type, AActor* Initiator);
 
 	// Restors health points
-	UFUNCTION(BlueprintCallable, Category = "ScarletHealth&Damage|Health")
+	UFUNCTION(BlueprintCallable, Category = "ScarletHealthDamage|Health")
 	void RegenerateHealth(float Amount);
 
 // Delegates
