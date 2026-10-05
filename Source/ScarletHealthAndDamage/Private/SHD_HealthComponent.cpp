@@ -43,14 +43,20 @@ void USHD_HealthComponent::ApplyDamage(float Damage, ESHD_DamageType Type, AActo
 	// Applying damage
 	Health -= ActualDamage;
 
+	// Clamping health + Death check
+	bool Death = false;
+	if (Health <= 0.f)
+	{
+		Health = 0.0f;
+		Death = true;
+	}
+
 	// Delegate calls
 	OnDamageTaken.Broadcast(Damage, Type, Initiator);
 	OnHealthChanged.Broadcast(-1.f * ActualDamage);
 
-	// Death check
-	if (Health <= 0.f)
+	if (Death)
 	{
-		Health = 0.0f;
 		OnHealthDepleted.Broadcast();
 	}
 }
