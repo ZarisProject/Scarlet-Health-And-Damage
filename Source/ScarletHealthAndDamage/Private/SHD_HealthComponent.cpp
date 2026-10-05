@@ -50,7 +50,7 @@ void USHD_HealthComponent::ApplyDamage(float Damage, ESHD_DamageType Type, AActo
 	if (Health <= 0.f)
 	{
 		Health = 0.0f;
-		Alive = false;
+		Alive = !CanDie;
 	}
 
 	// Delegate calls
@@ -59,7 +59,7 @@ void USHD_HealthComponent::ApplyDamage(float Damage, ESHD_DamageType Type, AActo
 
 	if (!Alive)
 	{
-		OnHealthDepleted.Broadcast();
+		OnDeath.Broadcast();
 	}
 }
 

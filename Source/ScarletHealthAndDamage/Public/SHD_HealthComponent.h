@@ -11,7 +11,7 @@
 
 
 // Delegate declarations
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDepleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDamageTaken, float, Damage, ESHD_DamageType, Type, AActor*, Initiator);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, Delta);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRevived);
@@ -39,6 +39,10 @@ public:
 	// Maximum amount of health "points"
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Default")
 	float MaxHealth = 100.0f;
+
+	// Whether this component stops being alive when it's health is depleted
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Default")
+	bool CanDie = true;
 
 	// Scaling factors for different types of damage
 	// If damage type is not present in the map, then 1.0 scaling is assumed
@@ -84,7 +88,7 @@ public:
 
 	// Called when health reaches 0.0 (or goes below it)
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
-	FOnHealthDepleted OnHealthDepleted;
+	FOnDeath OnDeath;
 
 	// Called every time damage is taken
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
