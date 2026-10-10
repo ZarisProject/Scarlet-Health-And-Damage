@@ -14,6 +14,10 @@ class SCARLETHEALTHANDDAMAGE_API USHD_RegenHealthComponent : public USHD_HealthC
 {
 	GENERATED_BODY()
 	
+public:
+	// Sets default values for this component's properties
+	USHD_RegenHealthComponent();
+
 protected:
 
 	// Current value of regeneration timer

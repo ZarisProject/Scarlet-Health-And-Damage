@@ -3,6 +3,12 @@
 
 #include "SHD_RegenHealthComponent.h"
 
+// Sets default values for this component's properties
+USHD_RegenHealthComponent::USHD_RegenHealthComponent()
+{
+	bAutoActivate = true;
+}
+
 // Called when the game starts
 void USHD_RegenHealthComponent::BeginPlay()
 {
@@ -27,6 +33,8 @@ void USHD_RegenHealthComponent::ResetTimer(float Damage, ESHD_DamageType Type, A
 void USHD_RegenHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!IsActive()) return;
 
 	// Regenereration timer
 	if (RegenerationTimer > 0.0)
